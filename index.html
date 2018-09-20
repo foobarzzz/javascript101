@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+    <h3>Javascript Basics</h3>
+    <button onclick="cleanAndCountCharacters()">
+        clean and count words
+    </button>
+    <body>
+    </body>
+</html>
+
+<style>
+    #rootContainer {
+        display: flex;
+    }
+    .root-container {
+        position: relative;
+    }
+    .root-container .header {
+        position: relative;
+    }
+    .root-container .main {
+        position: relative;
+    }
+    .root-container .footer {
+        position: relative;
+    }
+    .startups-container {
+        background-color: gray;
+    }
+    .red {
+        background-image: red;
+    }
+    .blue {
+        background-image: blue;
+    }
+    .gold {
+        background-image: gold;
+    }
+</style>
+
+<script>
+    var colors = ['red', 'blue', 'gold'];
+    var chicagoStartups = [
+        '  Interior   Define  ',
+        'Classkick',
+        'teaBOT  .$',
+        'Pritzker Group Venture Capital',
+        'Teln!yx !!',
+        'ShipBob ~~$$$',
+        'Hologram',
+        'Tovala    ',
+        '    MANOR',
+        'ShuttleCloud 999987',
+        'gtrot @@@@@',
+        'DealsGoRound ****',
+        ' Groovebug',
+        'Stage$$$Bloc',
+        'Shiftgig',
+        'ParkWhiz'
+    ];
+    function clearDocument() {
+        var rootDiv = document.getElementById('rootContainer');
+        if (rootDiv) {
+            while (rootDiv.hasChildNodes()) {
+                rootDiv.removeChild(rootDiv.lastChild);
+            }
+        }
+    }
+    function initDocument() {
+        clearDocument();
+        var rootDiv = document.createElement('div');
+        rootDiv.id = 'rootContainer';
+        var companyNamesContainer = document.createElement('div');
+        chicagoStartups.forEach( function(chicagoStartup, index) {
+            var childDiv = document.createElement('div');
+            var text = document.createTextNode(index.toString().concat(' .) ').concat(chicagoStartup));
+            childDiv.appendChild(text);
+            companyNamesContainer.appendChild(childDiv);
+        });
+        rootDiv.appendChild(companyNamesContainer);
+        document.body.appendChild(rootDiv);
+    }
+    function renderReversedElements() {
+        var reverseContainer = document.getElementById('reverseContainer');
+        var reversedChicagoStartups = [];
+        if (reverseContainer) {
+            if (reverseContainer.hasChildNodes()) {
+                while (reverseContainer.hasChildNodes()) {
+                    reversedChicagoStartups.push(reverseContainer.lastChild.innerHTML);
+                    reverseContainer.removeChild(reverseContainer.lastChild);
+                }
+                reversedChicagoStartups.forEach(function(chicagoStartup, index) {
+                    console.log(chicagoStartup);
+                    var childDiv = document.createElement('div');
+                    var text = document.createTextNode(chicagoStartup);
+                    childDiv.appendChild(text);
+                    reverseContainer.appendChild(childDiv);
+                });
+            }
+            else {
+                //TODO:: REPLACE [chicagoStartups.reverse()] WITH A FUNCTION CALLED "chicagoStartupsReverse"
+                chicagoStartupsReverse().forEach( function(startup) {
+                    var childDiv = document.createElement('div');
+                    var text = document.createTextNode(startup);
+                    childDiv.appendChild(text);
+                    reverseContainer.appendChild(childDiv);
+                });
+
+            }
+        }
+    }
+
+    function chicagoStartupsReverse() {
+        var reversedStartups = [];
+        /*
+            TODO: REVERSE THE CONTENTS OF THE ARRAY WITHOUT USING THE BUILT IN REVERSE METHOD
+                  RETURN THE REVERSED ARRAY
+            TIPS: 
+                1.  REVIEW JAVASCRIPT ARRAY DATA STRUCTURE AND THE BUILTIN METHODS PROVIDED TO ALL ARRAYS
+                2.  THIS IS A COMMON JOB INTERVIEW QUESTION, THAT SHOULD BE SOLVABLE BASED ON AN UNDERSTANDING OF
+                    DATA STRUTUCTURES REGARDLESS OF THE PROGRAMMING LANGUAGE
+        
+        */
+
+        while (chicagoStartups.length) {
+            reversedStartups.push(chicagoStartups.pop())
+        }
+        return reversedStartups;
+    }
+
+    function cleanAndCountCharacters() {
+        console.log('CLEAN AND COUNT CHARACTERS');
+        
+        /*
+            TODO: REMOVES ANY SPECIAL CHARACTERS FROM EACH COMPANY NAME AND
+              DISPLAYS THE NUMBER OF REMAINING CHARACTERS NEXT TO THE FULL WORD.
+              DONT FORGET TO REMOVE LEADING AND TRAILING WHITESPACES AS WELL
+        */
+        var element = document.getElementById('rootContainer');  
+        var cleanList = document.createElement('div');
+        var elementParent = element.parentNode;
+
+        chicagoStartups.forEach( function(chicagoStartup) {
+            //clean chicagoStartup list & append len
+            var cleaned = chicagoStartup.replace(/[^\w\s]|_/g, '')
+                                        .replace(/\s+/g, ' ')
+                                        .trim();
+            var cleanContainer = document.createElement('div');
+            var text = document.createTextNode(cleaned + "-" + cleaned.length);
+            cleanContainer.appendChild(text);
+            cleanList.appendChild(cleanContainer);
+
+        });
+        
+        elementParent.insertBefore(cleanList, element.nextSibling);
+            
+    }
+    
+
+    function initReverse() {
+        var reverseContainer = document.createElement('div');
+        reverseContainer.id = 'reverseContainer';
+        var reverseBtn = document.createElement('button');
+        var btnText = document.createTextNode('Reverse');
+        reverseBtn.onclick = renderReversedElements;
+        reverseBtn.appendChild(btnText);
+        var reverseButtonContainer = document.createElement('div');
+        reverseButtonContainer.appendChild(reverseBtn);    
+        document.getElementById('rootContainer').appendChild(reverseButtonContainer);
+        document.getElementById('rootContainer').appendChild(reverseContainer);
+    }
+    
+
+    function toggleDisplay() {
+
+        /*
+        TODO: REVIEW THE CODE IN THE PROVIDED REVERSE EXAMPLE, USE JAVASCRIPT TO ADD A CLICKABLE BUTTON 
+        CALLED "Toggle Display" ... WHEN THE USER CLICKS THE BUTTON, IT RENDERS THE DISPLAY OF THE COMPANY NAMES 
+        FROM VERTICAL, TO HORIZONTAL.
+        IF THE USER CLICKS THE TOGGLE BUTTON AGAIN THE NAMES SHOULD ONCE AGAIN BE DISPLAYED VERTICALLY.
+        TIPS: 
+            1.  MAKE SURE TO READ AND UNDERSTAND THE DIFFERENCE BETWEEN BLOCK ELEMENTS SUCH AS A DIV, 
+                AND INLINE ELEMENTS SUCH AS A SPAN.
+            2.  DIVIDE AND CONQUER.
+            3.  
+        */
+
+        var toggleList = document.getElementById('rootContainer').firstChild;
+        var toggledStartupList = [];
+
+        var toggleTag = toggleList.firstChild.tagName;
+        var flagTag;
+
+        if (toggleTag == "DIV") {flagTag = 'span';}
+        else {flagTag = 'div';}
+
+                while(toggleList.hasChildNodes()) {
+                    toggledStartupList.push(toggleList.firstChild.innerHTML);
+                    toggleList.removeChild(toggleList.firstChild);
+                }   
+
+                toggledStartupList.forEach(function(chicagoStartup) {
+                     
+                     var childDiv = document.createElement(flagTag);
+                     var text = document.createTextNode(chicagoStartup);
+                     childDiv.appendChild(text);
+                     toggleList.appendChild(childDiv);
+                     
+                })
+
+}
+
+
+    function initToggle() {
+        var toggleButton = document.createElement('button');
+        var buttonText = document.createTextNode('Toggle Display');
+        toggleButton.onclick = toggleDisplay; 
+        toggleButton.appendChild(buttonText);
+        var toggleButtonContainer = document.createElement('div');
+        toggleButtonContainer.appendChild(toggleButton);
+        document.getElementById('rootContainer').appendChild(toggleButtonContainer);
+    }
+    
+
+    function run() {
+        initDocument();
+        initReverse();
+        initToggle();
+    }
+
+    run();
+    
+    var flags = {
+        displayInstructions: true
+    };
+    //TODO INVOKE THIS ANONYMOUS FUNCTION TO DISPLAY HOMEWORK INSTRUCTIONS IN THE CONSOLE
+    (function() {
+        if (flags.displayInstructions) {
+            console.log(`
+                            ASSUMPTIONS: !!! NO JQUERY !!! 
+                                         TODO INDICATES THAT A SOLUTION IS REQUIRED
+                                         PLEASE INCLUDE YOUR GITHUB URL AS A COMMENT
+                                         EX. // https://github.com/Chandler-Gegg/javascript101.git
+                            Feel free to complete the exercises in whatever order you like.  
+                            Make sure to push your code to your own github repo as well as SUBMIT A ZIPFILE TO D2L.
+                            HOMEWORK IS DUE WEDNESDAYS AT MIDNIGHT NO EXCEPTIONS.
+                            dont forget to slack me the url to your github account as well.  
+                            You can earn extra credit by using the provided css classes in the style tag or additionally 
+                            you can pull in an external css library like bootstrap.  if you bring in bootstrap make sure to style
+                            the buttons using bootstraps built in button styling classes.
+                            Additionally, can earn extra credit by using an object to count the number of occurrences 
+                            of each character accross all startup names and style and display the results as part of the
+                            "cleanAndCountCharacters" function.
+                            If you are having trouble getting started, I would spend a lot of time reviewing the source code provided in the reverse example.
+                            Make sure I understand whats going on and do a google search on anything that is confusing.  
+                            THE BETTER YOU UNDERSTAND THE EXAMPLE THE EASIER THIS SHOULD BE. THEN REVIEW THE TODOS AND START BY TRYING TO SOLVE THE EASIEST
+                            PROBLEM.
+                            FROM MY OWN EXPERIENCE, I FIND THAT WHEN IM STRUGGLING WITH A PROBLEM, IT USUALLY MEANS
+                            I DONT FULLY UNDERSTAND THE TOOLS THAT I AM USING.
+                            GOOD LUCK, SEE YOU ON THE FLIPPITY FLOP "\_(**/)_/"
+                        `);
+        }
+        
+    });
+</script>
